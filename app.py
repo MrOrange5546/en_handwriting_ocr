@@ -1,3 +1,4 @@
+import shutil
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 from tensorflow import keras
 import matplotlib.pyplot as plt
@@ -32,7 +33,7 @@ def get_img_files(data_dir: Path) -> List[Path]:
     return res
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data', type=Path, default=Path('./data/page'))
+parser.add_argument('--data', type=Path, default=Path('data\\page'))
 parser.add_argument('--kernel_size', type=int, default=25)
 parser.add_argument('--sigma', type=float, default=11)
 parser.add_argument('--theta', type=float, default=7)
@@ -73,7 +74,7 @@ def save_image_names_to_text_files():
                 crop_img = img[det.bbox.y:det.bbox.y +
                                det.bbox.h, det.bbox.x:det.bbox.x+det.bbox.w]
                 
-                path = './test_images'
+                path = 'test_images'
                 # Check whether the specified
                 # path exists or not
                 isExist = os.path.exists(path)
@@ -89,7 +90,7 @@ def save_image_names_to_text_files():
                 print(list_img_names_serial)
                 list_img_names_serial_set = set(list_img_names_serial)
 
-                textfile = open("./examples/img_names_sequence.txt", "w")
+                textfile = open("examples\\img_names_sequence.txt", "w")
                 for element in list_img_names_serial:
                     textfile.write(element + "\n")
                 textfile.close()
@@ -137,7 +138,7 @@ def natural_keys(text):
 t_images.sort(key=natural_keys)
 print(t_images)
 
-with open("./characters", "rb") as fp:   # Unpickling
+with open("characters", "rb") as fp:   # Unpickling
     b = pickle.load(fp)
     print(b)
 
@@ -302,7 +303,7 @@ model.summary()
 
 custom_objects = {"CTCLayer": CTCLayer}
 
-reconstructed_model = keras.models.load_model("./ocr_model_50_epoch.h5", custom_objects=custom_objects)
+reconstructed_model = keras.models.load_model("ocr_model_50_epoch.h5", custom_objects=custom_objects)
 prediction_model = keras.models.Model(
   reconstructed_model.get_layer(name="image").input, reconstructed_model.get_layer(name="dense2").output
 )
@@ -363,6 +364,29 @@ print(flat_list)
 sentence = ' '.join(flat_list)
 print(sentence)
 
+# กำหนดชื่อไฟล์ที่ต้องการบันทึก
+file_name = "output.txt"
 
+# เปิดไฟล์ .txt สำหรับเขียน (ถ้าไม่มีไฟล์จะสร้างใหม่)
+with open(file_name, 'w') as file:
+    # เขียนข้อมูลลงในไฟล์
+    file.write(sentence)
+    
+print(f"ผลลัพธ์ได้ถูกบันทึกลงในไฟล์ {file_name}")
+
+def clear_test_images_folder():
+    folder_path = "test_images"
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+# เพิ่มฟังก์ชันเพื่อลบไฟล์รูปทั้งหมดในโฟลเดอร์ test_images หลังจากทำนายและบันทึกผลลัพธ์ลงในไฟล์
+clear_test_images_folder()
 
 

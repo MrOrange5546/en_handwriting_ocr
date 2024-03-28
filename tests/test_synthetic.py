@@ -1,7 +1,7 @@
 import numpy as np
+import sys
 
 from word_detector import detect, prepare_img, sort_multiline, BBox
-
 
 def test_synthetic():
     """A synthetic test that checks the core functionality of the package."""

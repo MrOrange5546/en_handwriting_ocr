@@ -27,7 +27,7 @@ def get_img_files(data_dir: Path) -> List[Path]:
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data', type=Path, default=Path('../data/page'))
+parser.add_argument('--data', type=Path, default=Path('data\\page'))
 parser.add_argument('--kernel_size', type=int, default=25)
 parser.add_argument('--sigma', type=float, default=11)
 parser.add_argument('--theta', type=float, default=7)
@@ -69,7 +69,7 @@ def save_image_names_to_text_files():
                                det.bbox.h, det.bbox.x:det.bbox.x+det.bbox.w]
                 # cv2.imwrite("")
 
-                path = '../test_images'
+                path = 'test_images'
                 # Check whether the specified
                 # path exists or not
                 isExist = os.path.exists(path)
@@ -77,7 +77,7 @@ def save_image_names_to_text_files():
                     os.mkdir(path)
                     print("Directory Created")
 
-                cv2.imwrite("../test_images/line" + str(line_idx) + "word" +
+                cv2.imwrite("test_images\\line" + str(line_idx) + "word" +
                             str(word_idx) + ".jpg", crop_img)
                 full_img_path = "line" + \
                     str(line_idx) + "word" + str(word_idx)+".jpg"

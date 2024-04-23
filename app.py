@@ -1,5 +1,5 @@
 import shutil
-from tensorflow.keras.layers.experimental.preprocessing import StringLookup
+from tensorflow.keras.layers.experimental.preprocessing import StringLookup # type: ignore
 from tensorflow import keras
 import matplotlib.pyplot as plt
 import tensorflow as tf
